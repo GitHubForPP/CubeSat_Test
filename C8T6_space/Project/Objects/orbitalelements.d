@@ -1,0 +1,11 @@
+.\objects\orbitalelements.o: ..\Hardware\orbit\OrbitalElements.c
+.\objects\orbitalelements.o: ..\Hardware\orbit\OrbitalElements.h
+.\objects\orbitalelements.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\orbitalelements.o: ..\Hardware\orbit\tle.h
+.\objects\orbitalelements.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\orbitalelements.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\orbitalelements.o: ..\Hardware\orbit\DataTime.h
+.\objects\orbitalelements.o: ..\Hardware\orbit\TimeSpan.h
+.\objects\orbitalelements.o: ..\Hardware\orbit\util.h
+.\objects\orbitalelements.o: ..\Hardware\orbit\globals.h
+.\objects\orbitalelements.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
