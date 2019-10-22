@@ -334,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\CMSIS\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\User;..\..\FreeRTOS\include;..\..\FreeRTOS\port\RVDS\ARM_CM4F;..\..\User\key;..\..\User\led;..\..\User\uart;..\..\User\FATFS</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\CMSIS\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\User;..\..\FreeRTOS\include;..\..\FreeRTOS\port\RVDS\ARM_CM4F;..\..\User\FATFS;..\..\User\led;..\..\User\sdram;..\..\User\uart;..\..\User\flash;..\..\Moudle\Ymodem</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -662,6 +662,16 @@
               <FilePath>..\..\User\stm32f4xx_it.c</FilePath>
             </File>
             <File>
+              <FileName>FreeRTOSConfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\User\FreeRTOSConfig.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BSP</GroupName>
+          <Files>
+            <File>
               <FileName>bsp_led.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\led\bsp_led.c</FilePath>
@@ -672,9 +682,9 @@
               <FilePath>..\..\User\uart\bsp_debug_usart.c</FilePath>
             </File>
             <File>
-              <FileName>FreeRTOSConfig.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\User\FreeRTOSConfig.h</FilePath>
+              <FileName>bsp_updata_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\uart\bsp_updata_usart.c</FilePath>
             </File>
             <File>
               <FileName>bsp_sdram.c</FileName>
@@ -686,10 +696,15 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\flash\bsp_spi_flash.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Moudle</GroupName>
+          <Files>
             <File>
-              <FileName>user_filesystem.c</FileName>
+              <FileName>ymodem.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\User\FATFS\user_filesystem.c</FilePath>
+              <FilePath>..\..\Moudle\Ymodem\ymodem.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -715,6 +730,11 @@
               <FileName>syscall.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\FATFS\option\syscall.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_filesystem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\FATFS\user_filesystem.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -765,16 +785,6 @@
               <FileName>heap_5.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\FreeRTOS\port\MemMang\heap_5.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>DOC</GroupName>
-          <Files>
-            <File>
-              <FileName>必读说明.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\必读说明.txt</FilePath>
             </File>
           </Files>
         </Group>

@@ -55,4 +55,4 @@
 ..\..\output\diskio.o: ..\..\FreeRTOS\include\queue.h
 ..\..\output\diskio.o: ..\..\FreeRTOS\include\semphr.h
 ..\..\output\diskio.o: ..\..\User\FATFS\ffconf.h
-..\..\output\diskio.o: ..\..\User\flash/bsp_spi_flash.h
+..\..\output\diskio.o: ..\..\User\flash\bsp_spi_flash.h

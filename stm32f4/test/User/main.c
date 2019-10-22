@@ -26,13 +26,16 @@
 /* 开发板硬件bsp头文件 */
 #include "bsp_led.h"
 #include "bsp_debug_usart.h"
-#include "bsp_key.h"
-#include "./sdram/bsp_sdram.h"   
-#include "./flash/bsp_spi_flash.h"
+#include "bsp_sdram.h"   
+#include "bsp_spi_flash.h"
+#include "bsp_updata_usart.h"
 
 /* 文件系统头件 */
 #include "ff.h"
 #include "user_filesystem.h"
+
+/* Moudle */
+#include "ymodem.h"
 
 /**************************** 任务句柄 ********************************/
 /* 
@@ -42,6 +45,7 @@
  */
 static TaskHandle_t AppTaskCreate_Handle = NULL;/* 创建任务句柄 */
 static TaskHandle_t Test_Task_Handle = NULL;/* LED任务句柄 */
+
 
 /********************************** 内核对象句柄 *********************************/
 /*
@@ -59,7 +63,7 @@ static TaskHandle_t Test_Task_Handle = NULL;/* LED任务句柄 */
 /******************************* 全局变量声明 ************************************/
 HeapRegion_t xHeapRegions[] =
 	{
-	{ ( uint8_t * ) SDRAM_BANK_ADDR, IS42S16400J_SIZE },
+	{ ( uint8_t * ) SDRAM_BANK_ADDR, IS42S16400J_SIZE/2 },
 	{ NULL, 0 }                
 };
 
@@ -74,6 +78,7 @@ static void AppTaskCreate(void);/* 用于创建任务 */
 static void Test_Task(void* pvParameters);/* Test_Task任务实现 */
 
 static void BSP_Init(void);/* 用于初始化板载相关资源 */
+
 /*****************************************************************
   * @brief  主函数
   * @param  无
@@ -90,7 +95,6 @@ int main(void)
   BSP_Init();
   
   printf("这是一个[野火]-STM32全系列开发板-FreeRTOS固件库例程！\n\n");
-  //printf("按下KEY1挂起任务，按下KEY2恢复任务\n");
   
    /* 创建AppTaskCreate任务 */
   xReturn = xTaskCreate((TaskFunction_t )AppTaskCreate,  /* 任务入口函数 */
@@ -99,6 +103,7 @@ int main(void)
                         (void*          )NULL,/* 任务入口函数参数 */
                         (UBaseType_t    )1, /* 任务的优先级 */
                         (TaskHandle_t*  )&AppTaskCreate_Handle);/* 任务控制块指针 */ 
+															
   /* 启动任务调度 */           
   if(pdPASS == xReturn)
     vTaskStartScheduler();   /* 启动任务，开启调度 */
@@ -128,6 +133,7 @@ static void AppTaskCreate(void)
                         (void*          )NULL,	/* 任务入口函数参数 */
                         (UBaseType_t    )2,	    /* 任务的优先级 */
                         (TaskHandle_t*  )&Test_Task_Handle);/* 任务控制块指针 */
+															
   if(pdPASS == xReturn)
     printf("创建Test_Task任务成功!\r\n");
   
@@ -146,7 +152,8 @@ static void AppTaskCreate(void)
   ********************************************************************/
 static void Test_Task(void* parameter)
 {	
-	ucFileSystemInit();
+	//ucFileSystemInit();
+
   while (1)
   {
     LED_ON;
@@ -190,6 +197,10 @@ static void BSP_Init(void)
 	SPI_FLASH_Init();
 	
 	vPortDefineHeapRegions( xHeapRegions );
+	
+	vYmodem_Init();
+	
+	vYmodem_Handle();
 }
 
 

@@ -29,7 +29,7 @@ static void vNVIC_Configuration(void)
   /* 配置USART为中断源 */
   NVIC_InitStructure.NVIC_IRQChannel = DEBUG_USART_IRQ;
   /* 抢断优先级为1 */
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
   /* 子优先级为1 */
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
   /* 使能中断 */
@@ -189,4 +189,10 @@ int fputc(int ch, FILE *f)
 
 //		return (int)USART_ReceiveData(DEBUG_USART);
 //}
+
+//void DEBUG_USART_IRQHandler(void) {
+
+//}
+
+
 /*********************************************END OF FILE**********************/

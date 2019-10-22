@@ -50,9 +50,10 @@
 ..\..\output\main.o: ..\..\FreeRTOS\include\task.h
 ..\..\output\main.o: ..\..\FreeRTOS\include\list.h
 ..\..\output\main.o: ..\..\User\led\bsp_led.h
-..\..\output\main.o: ..\..\User\key\bsp_key.h
-..\..\output\main.o: ..\..\User\./sdram/bsp_sdram.h
-..\..\output\main.o: ..\..\User\./flash/bsp_spi_flash.h
+..\..\output\main.o: ..\..\User\sdram\bsp_sdram.h
+..\..\output\main.o: ..\..\User\flash\bsp_spi_flash.h
+..\..\output\main.o: ..\..\User\uart\bsp_updata_usart.h
+..\..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\..\output\main.o: ..\..\User\FATFS\ff.h
 ..\..\output\main.o: ..\..\FreeRTOS\include\queue.h
 ..\..\output\main.o: ..\..\FreeRTOS\include\semphr.h
@@ -60,3 +61,4 @@
 ..\..\output\main.o: ..\..\User\FATFS\ffconf.h
 ..\..\output\main.o: ..\..\User\FATFS\user_filesystem.h
 ..\..\output\main.o: ..\..\User\FATFS\ff.h
+..\..\output\main.o: ..\..\Moudle\Ymodem\ymodem.h

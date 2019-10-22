@@ -906,18 +906,18 @@ ARM Macro Assembler    Page 14
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=..\..\output\startup_stm32f429_439xx.d -o..\..\output\startup_s
-tm32f429_439xx.o -ID:\project_git\stm32f4\test\Project\RVMDK£¨uv5£©\RTE -IC:\Ke
-il_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Incl
+tm32f429_439xx.o -ID:\project_git\CubeSat_Test\stm32f4\test\Project\RVMDK£¨uv5£
+©\RTE -IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\S
 
 
 
 ARM Macro Assembler    Page 15 
 
 
-ude -IC:\Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 520" --p
-redefine="STM32F429xx SETA 1" --list=..\..\listing\startup_stm32f429_439xx.lst 
-..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f42
-9_439xx.s
+TM32F4xx\Include -IC:\Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION 
+SETA 520" --predefine="STM32F429xx SETA 1" --list=..\..\listing\startup_stm32f4
+29_439xx.lst ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\sta
+rtup_stm32f429_439xx.s
 
 
 

@@ -1,5 +1,5 @@
 ..\..\output\bsp_spi_flash.o: ..\..\User\flash\bsp_spi_flash.c
-..\..\output\bsp_spi_flash.o: ..\..\User\./flash/bsp_spi_flash.h
+..\..\output\bsp_spi_flash.o: ..\..\User\flash\bsp_spi_flash.h
 ..\..\output\bsp_spi_flash.o: ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\..\output\bsp_spi_flash.o: ..\..\Libraries\CMSIS\Include\core_cm4.h
 ..\..\output\bsp_spi_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
