@@ -334,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\CMSIS\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\User;..\..\FreeRTOS\include;..\..\FreeRTOS\port\RVDS\ARM_CM4F;..\..\User\FATFS;..\..\User\led;..\..\User\sdram;..\..\User\uart;..\..\User\flash;..\..\Moudle\Ymodem</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\CMSIS\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\User;..\..\FreeRTOS\include;..\..\FreeRTOS\port\RVDS\ARM_CM4F;..\..\User\FATFS;..\..\User\led;..\..\User\sdram;..\..\User\uart;..\..\User\flash;..\..\Moudle\Ymodem;..\..\Moudle\Orbit</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -699,12 +699,57 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Moudle</GroupName>
+          <GroupName>Moudle/ymodem</GroupName>
           <Files>
             <File>
               <FileName>ymodem.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Moudle\Ymodem\ymodem.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Moudle/orbit</GroupName>
+          <Files>
+            <File>
+              <FileName>DataTime.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\DataTime.c</FilePath>
+            </File>
+            <File>
+              <FileName>eci.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\eci.c</FilePath>
+            </File>
+            <File>
+              <FileName>OrbitalElements.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\OrbitalElements.c</FilePath>
+            </File>
+            <File>
+              <FileName>SGP4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\SGP4.c</FilePath>
+            </File>
+            <File>
+              <FileName>TimeSpan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\TimeSpan.c</FilePath>
+            </File>
+            <File>
+              <FileName>tle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\tle.c</FilePath>
+            </File>
+            <File>
+              <FileName>util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\util.c</FilePath>
+            </File>
+            <File>
+              <FileName>Vector.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Moudle\Orbit\Vector.c</FilePath>
             </File>
           </Files>
         </Group>

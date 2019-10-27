@@ -1,0 +1,14 @@
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\SGP4.c
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\SGP4.h
+..\..\output\sgp4.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\OrbitalElements.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\tle.h
+..\..\output\sgp4.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\sgp4.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\DataTime.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\TimeSpan.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\util.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\globals.h
+..\..\output\sgp4.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\eci.h
+..\..\output\sgp4.o: ..\..\Moudle\Orbit\Vector.h

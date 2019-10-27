@@ -35,7 +35,13 @@
 #include "user_filesystem.h"
 
 /* Moudle */
-#include "ymodem.h"
+//ymodem
+#include "ymodem.h"		
+
+//orbit
+#include "tle.h" 			
+#include "SGP4.h"
+#include "eci.h"
 
 /**************************** 任务句柄 ********************************/
 /* 
@@ -63,7 +69,7 @@ static TaskHandle_t Test_Task_Handle = NULL;/* LED任务句柄 */
 /******************************* 全局变量声明 ************************************/
 HeapRegion_t xHeapRegions[] =
 	{
-	{ ( uint8_t * ) SDRAM_BANK_ADDR, IS42S16400J_SIZE/2 },
+	{ ( uint8_t * ) SDRAM_BANK_ADDR, IS42S16400J_SIZE-0x100000 },
 	{ NULL, 0 }                
 };
 
@@ -93,8 +99,6 @@ int main(void)
   
   /* 开发板硬件初始化 */
   BSP_Init();
-  
-  printf("这是一个[野火]-STM32全系列开发板-FreeRTOS固件库例程！\n\n");
   
    /* 创建AppTaskCreate任务 */
   xReturn = xTaskCreate((TaskFunction_t )AppTaskCreate,  /* 任务入口函数 */
@@ -152,16 +156,15 @@ static void AppTaskCreate(void)
   ********************************************************************/
 static void Test_Task(void* parameter)
 {	
-	//ucFileSystemInit();
 
   while (1)
   {
     LED_ON;
-    printf(">>> Test_Task Running,LED1_ON\r\n");
+    //printf(">>> Test_Task Running,LED1_ON\r\n");
     vTaskDelay(500);   /* 延时500个tick */
     
     LED_OFF;     
-    printf(">>> Test_Task Running,LED1_OFF\r\n");
+    //printf(">>> Test_Task Running,LED1_OFF\r\n");
     vTaskDelay(500);   /* 延时500个tick */
   }
 }
@@ -194,13 +197,13 @@ static void BSP_Init(void)
 	SDRAM_Init();
 	
 	/* 16M串行flash W25Q128初始化 */
-	SPI_FLASH_Init();
+//	SPI_FLASH_Init();
 	
 	vPortDefineHeapRegions( xHeapRegions );
 	
-	vYmodem_Init();
-	
-	vYmodem_Handle();
+	/*	Ymodem初始化 (缓存空间使用SDRAM 请确认SDRAM已经初始化)	*/
+//	vYmodem_Init();
+
 }
 
 

@@ -52,3 +52,4 @@
 ..\..\output\ymodem.o: ..\..\FreeRTOS\include\list.h
 ..\..\output\ymodem.o: ..\..\User\uart\bsp_updata_usart.h
 ..\..\output\ymodem.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\ymodem.o: ..\..\User\sdram\bsp_sdram.h

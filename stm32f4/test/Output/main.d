@@ -62,3 +62,14 @@
 ..\..\output\main.o: ..\..\User\FATFS\user_filesystem.h
 ..\..\output\main.o: ..\..\User\FATFS\ff.h
 ..\..\output\main.o: ..\..\Moudle\Ymodem\ymodem.h
+..\..\output\main.o: ..\..\Moudle\Orbit\tle.h
+..\..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\main.o: ..\..\Moudle\Orbit\DataTime.h
+..\..\output\main.o: ..\..\Moudle\Orbit\TimeSpan.h
+..\..\output\main.o: ..\..\Moudle\Orbit\SGP4.h
+..\..\output\main.o: ..\..\Moudle\Orbit\OrbitalElements.h
+..\..\output\main.o: ..\..\Moudle\Orbit\util.h
+..\..\output\main.o: ..\..\Moudle\Orbit\globals.h
+..\..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\main.o: ..\..\Moudle\Orbit\eci.h
+..\..\output\main.o: ..\..\Moudle\Orbit\Vector.h
