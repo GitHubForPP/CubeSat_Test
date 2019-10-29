@@ -1,5 +1,5 @@
 ..\..\output\bsp_sdram.o: ..\..\User\sdram\bsp_sdram.c
-..\..\output\bsp_sdram.o: ..\..\User\./sdram/bsp_sdram.h
+..\..\output\bsp_sdram.o: ..\..\User\sdram\bsp_sdram.h
 ..\..\output\bsp_sdram.o: ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\..\output\bsp_sdram.o: ..\..\Libraries\CMSIS\Include\core_cm4.h
 ..\..\output\bsp_sdram.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h

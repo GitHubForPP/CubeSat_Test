@@ -97,6 +97,8 @@ int main(void)
 {	
   BaseType_t xReturn = pdPASS;/* 定义一个创建信息返回值，默认为pdPASS */
   
+	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x40000);
+	
   /* 开发板硬件初始化 */
   BSP_Init();
   
@@ -156,7 +158,9 @@ static void AppTaskCreate(void)
   ********************************************************************/
 static void Test_Task(void* parameter)
 {	
-
+//	_YMODEM_MSG_INFO_STR str = {0};
+//	vYmodem_Handle(&str);
+	printf(">> test task start1\r\n");
   while (1)
   {
     LED_ON;
@@ -202,7 +206,9 @@ static void BSP_Init(void)
 	vPortDefineHeapRegions( xHeapRegions );
 	
 	/*	Ymodem初始化 (缓存空间使用SDRAM 请确认SDRAM已经初始化)	*/
-//	vYmodem_Init();
+	vYmodem_Init();
+	
+	printf(">> bsp init ok\r\n");
 
 }
 
