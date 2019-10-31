@@ -1,0 +1,103 @@
+# Project: csp_test
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = main.o csp/src/csp_bridge.o csp/src/csp_buffer.o csp/src/csp_conn.o csp/src/csp_debug.o csp/src/csp_endian.o csp/src/csp_iflist.o csp/src/csp_io.o csp/src/csp_port.o csp/src/csp_promisc.o csp/src/csp_qfifo.o csp/src/csp_route.o csp/src/csp_service_handler.o csp/src/csp_services.o csp/src/csp_sfp.o csp/src/arch/windows/csp_malloc.o csp/src/arch/windows/csp_queue.o csp/src/arch/windows/csp_semaphore.o csp/src/arch/windows/csp_system.o csp/src/arch/windows/csp_thread.o csp/src/arch/windows/csp_time.o csp/src/arch/windows/windows_queue.o csp/src/drivers/usart/usart_windows.o csp/src/interfaces/csp_if_lo.o csp/src/rtable/csp_rtable_static.o csp/src/transport/csp_udp.o
+LINKOBJ  = main.o csp/src/csp_bridge.o csp/src/csp_buffer.o csp/src/csp_conn.o csp/src/csp_debug.o csp/src/csp_endian.o csp/src/csp_iflist.o csp/src/csp_io.o csp/src/csp_port.o csp/src/csp_promisc.o csp/src/csp_qfifo.o csp/src/csp_route.o csp/src/csp_service_handler.o csp/src/csp_services.o csp/src/csp_sfp.o csp/src/arch/windows/csp_malloc.o csp/src/arch/windows/csp_queue.o csp/src/arch/windows/csp_semaphore.o csp/src/arch/windows/csp_system.o csp/src/arch/windows/csp_thread.o csp/src/arch/windows/csp_time.o csp/src/arch/windows/windows_queue.o csp/src/drivers/usart/usart_windows.o csp/src/interfaces/csp_if_lo.o csp/src/rtable/csp_rtable_static.o csp/src/transport/csp_udp.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/project_git/CubeSat_Test/CSP/CSP_test/csp/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"D:/project_git/CubeSat_Test/CSP/CSP_test/csp/include"
+BIN      = csp_test.exe
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+csp/src/csp_bridge.o: csp/src/csp_bridge.c
+	$(CC) -c csp/src/csp_bridge.c -o csp/src/csp_bridge.o $(CFLAGS)
+
+csp/src/csp_buffer.o: csp/src/csp_buffer.c
+	$(CC) -c csp/src/csp_buffer.c -o csp/src/csp_buffer.o $(CFLAGS)
+
+csp/src/csp_conn.o: csp/src/csp_conn.c
+	$(CC) -c csp/src/csp_conn.c -o csp/src/csp_conn.o $(CFLAGS)
+
+csp/src/csp_debug.o: csp/src/csp_debug.c
+	$(CC) -c csp/src/csp_debug.c -o csp/src/csp_debug.o $(CFLAGS)
+
+csp/src/csp_endian.o: csp/src/csp_endian.c
+	$(CC) -c csp/src/csp_endian.c -o csp/src/csp_endian.o $(CFLAGS)
+
+csp/src/csp_iflist.o: csp/src/csp_iflist.c
+	$(CC) -c csp/src/csp_iflist.c -o csp/src/csp_iflist.o $(CFLAGS)
+
+csp/src/csp_io.o: csp/src/csp_io.c
+	$(CC) -c csp/src/csp_io.c -o csp/src/csp_io.o $(CFLAGS)
+
+csp/src/csp_port.o: csp/src/csp_port.c
+	$(CC) -c csp/src/csp_port.c -o csp/src/csp_port.o $(CFLAGS)
+
+csp/src/csp_promisc.o: csp/src/csp_promisc.c
+	$(CC) -c csp/src/csp_promisc.c -o csp/src/csp_promisc.o $(CFLAGS)
+
+csp/src/csp_qfifo.o: csp/src/csp_qfifo.c
+	$(CC) -c csp/src/csp_qfifo.c -o csp/src/csp_qfifo.o $(CFLAGS)
+
+csp/src/csp_route.o: csp/src/csp_route.c
+	$(CC) -c csp/src/csp_route.c -o csp/src/csp_route.o $(CFLAGS)
+
+csp/src/csp_service_handler.o: csp/src/csp_service_handler.c
+	$(CC) -c csp/src/csp_service_handler.c -o csp/src/csp_service_handler.o $(CFLAGS)
+
+csp/src/csp_services.o: csp/src/csp_services.c
+	$(CC) -c csp/src/csp_services.c -o csp/src/csp_services.o $(CFLAGS)
+
+csp/src/csp_sfp.o: csp/src/csp_sfp.c
+	$(CC) -c csp/src/csp_sfp.c -o csp/src/csp_sfp.o $(CFLAGS)
+
+csp/src/arch/windows/csp_malloc.o: csp/src/arch/windows/csp_malloc.c
+	$(CC) -c csp/src/arch/windows/csp_malloc.c -o csp/src/arch/windows/csp_malloc.o $(CFLAGS)
+
+csp/src/arch/windows/csp_queue.o: csp/src/arch/windows/csp_queue.c
+	$(CC) -c csp/src/arch/windows/csp_queue.c -o csp/src/arch/windows/csp_queue.o $(CFLAGS)
+
+csp/src/arch/windows/csp_semaphore.o: csp/src/arch/windows/csp_semaphore.c
+	$(CC) -c csp/src/arch/windows/csp_semaphore.c -o csp/src/arch/windows/csp_semaphore.o $(CFLAGS)
+
+csp/src/arch/windows/csp_system.o: csp/src/arch/windows/csp_system.c
+	$(CC) -c csp/src/arch/windows/csp_system.c -o csp/src/arch/windows/csp_system.o $(CFLAGS)
+
+csp/src/arch/windows/csp_thread.o: csp/src/arch/windows/csp_thread.c
+	$(CC) -c csp/src/arch/windows/csp_thread.c -o csp/src/arch/windows/csp_thread.o $(CFLAGS)
+
+csp/src/arch/windows/csp_time.o: csp/src/arch/windows/csp_time.c
+	$(CC) -c csp/src/arch/windows/csp_time.c -o csp/src/arch/windows/csp_time.o $(CFLAGS)
+
+csp/src/arch/windows/windows_queue.o: csp/src/arch/windows/windows_queue.c
+	$(CC) -c csp/src/arch/windows/windows_queue.c -o csp/src/arch/windows/windows_queue.o $(CFLAGS)
+
+csp/src/drivers/usart/usart_windows.o: csp/src/drivers/usart/usart_windows.c
+	$(CC) -c csp/src/drivers/usart/usart_windows.c -o csp/src/drivers/usart/usart_windows.o $(CFLAGS)
+
+csp/src/interfaces/csp_if_lo.o: csp/src/interfaces/csp_if_lo.c
+	$(CC) -c csp/src/interfaces/csp_if_lo.c -o csp/src/interfaces/csp_if_lo.o $(CFLAGS)
+
+csp/src/rtable/csp_rtable_static.o: csp/src/rtable/csp_rtable_static.c
+	$(CC) -c csp/src/rtable/csp_rtable_static.c -o csp/src/rtable/csp_rtable_static.o $(CFLAGS)
+
+csp/src/transport/csp_udp.o: csp/src/transport/csp_udp.c
+	$(CC) -c csp/src/transport/csp_udp.c -o csp/src/transport/csp_udp.o $(CFLAGS)
