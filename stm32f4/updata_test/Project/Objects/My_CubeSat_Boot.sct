@@ -9,7 +9,7 @@ LR_IROM1 0x08000000 0x00020000  {    ; load region size_region
    .ANY (+RO)
   }
   app_ROM 0x08010000 FIXED 0x00010000  {  ; load address = execution address
-   main.o test.o(+RO)
+   bsp_debug_usart.o(+RO)
   }
   RW_IRAM1 0x20000000 UNINIT 0x00030000  {  ; RW data
    .ANY (+RW +ZI)

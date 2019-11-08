@@ -334,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\CMSIS\Include;..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\User;..\Bsp\led;..\Bsp\systick;..\Bsp\spi_flash;..\Bsp\internal_flash;..\Bsp\sdram;..\Bsp\uart;..\Moudle\Mmodem;..\Moudle\Updata;..\Moudle\Crc</IncludePath>
+              <IncludePath>..\Libraries\CMSIS\Include;..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\User;..\Bsp\led;..\Bsp\systick;..\Bsp\spi_flash;..\Bsp\internal_flash;..\Bsp\sdram;..\Bsp\uart;..\Moudle\Mmodem;..\Moudle\Updata;..\Moudle\Crc;..\Moudle\Omodem</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -355,7 +355,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>1</umfTarg>
+            <umfTarg>0</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -436,6 +436,16 @@
               <FileName>bsp_internal_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Bsp\internal_flash\bsp_internal_flash.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Moudle/Omodem</GroupName>
+          <Files>
+            <File>
+              <FileName>omodem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Moudle\Omodem\omodem.c</FilePath>
             </File>
           </Files>
         </Group>

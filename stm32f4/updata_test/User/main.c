@@ -21,6 +21,7 @@
 #include "updata.h"
 #include "mmodem.h"
 #include "test.h"
+#include "omodem.h"
 
 /************** 宏定义 ************/
 #define MAIN_LOOP_TIME						(5*1000)	//ms
@@ -37,8 +38,8 @@ uint16_t ui_loop_cnt = 0;
 int8_t uc_app_run_flag = 0, uc_updata_app_flag = 0, read_app_cnt = 0;
 
 //升级数据
-//_UPDATA_UP_INFO_STR	 updata_up_str = {0};
-//_UPDATA_APP_INFO_STR updata_app_str = {0};
+_UPDATA_UP_INFO_STR	 updata_up_str = {0};
+_UPDATA_APP_INFO_STR updata_app_str = {0};
 _MMODEM_MSG_INFO_STR updata_msg_str = {0};
 
 //缓存数据
@@ -63,13 +64,10 @@ int main(void)
 	/* 模块初始化 */
 	vMoudle_Init();
 	
-//	for (i = 0; i < 700; ++i) {
-//		if (i%16 == 0 && i != 0) printf("\r\n");
-//		printf("%x\t", *(uint8_t *)(0x10000+0x08000000+i));
-//	}
-//	printf("\r\n");
-	
-	test_init();
+	/* TEST */
+	for (i = 0; i < (70*1024); ++i) {
+		p_up_data[i] = *(uint8_t *)(0x08040000+i);
+	}
 
 	while(1) {
 		/* LED闪烁 */
@@ -81,20 +79,22 @@ int main(void)
 		
 		/* 10S时间到 */
 		if (++ui_loop_cnt >= (MAIN_LOOP_TIME/MAIN_ONE_LOOP_TIME)) {
-			//ui_loop_cnt = 0;
+			ui_loop_cnt = 0;
+			//vUpdata_Jump_To_Run();
 		}
 		/* ------------ */
 		
 		/* 1S周期 */
 		if (ui_loop_cnt%(1000/MAIN_ONE_LOOP_TIME) == 0) {
-			if (vMmodem_Handle(&updata_msg_str, p_data) == 0) {
-				printf("get updata file ok\r\n");
-				for (i = 0; i < updata_msg_str.ul_file_size; ++i) {
-					printf("%x ", p_data[i]);
-				}
-				printf("\r\n\r\n");
-				cInterNal_Flash_Write(p_data, updata_msg_str.ul_start_addr+0x08000000, updata_msg_str.ul_file_size);
-			}
+//			if (vMmodem_Handle(&updata_msg_str, p_data) == 0) {
+//				printf("get updata file ok\r\n");
+//			}
+			printf("time %d\r\n", (ui_loop_cnt/(1000/MAIN_ONE_LOOP_TIME)));
+		}
+		if (vOmodem_Handle(p_up_data) == 0) {
+			updata_app_str.ul_file_size = (70*1024);
+			vUpdata_Write_App(&updata_app_str, p_up_data);
+			vUpdata_Jump_To_Run();
 		}
 		/* --------------- */
 	}   

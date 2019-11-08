@@ -51,3 +51,4 @@
 .\objects\main.o: ..\Bsp\uart\bsp_updata_usart.h
 .\objects\main.o: ..\Moudle\Crc\crc.h
 .\objects\main.o: ..\User\test.h
+.\objects\main.o: ..\Moudle\Omodem\omodem.h
