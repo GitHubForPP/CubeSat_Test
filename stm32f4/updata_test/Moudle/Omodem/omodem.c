@@ -87,54 +87,73 @@ uint16_t prv_uiOmodem_Get_Buff(uint8_t *data) {
 }
 
 /**
-	* 函数名:		int8_t vOmodem_Handle(uint8_t *data)
-	* 作用:			Omodem在轨协议处理函数
-	*						*data->接收数据首地址
-	*	输出:			0->接收文件成功
-	*						-1->接收文件失败
+	* 函数名:		int8_t cOmodem_Analysis(_OMODEM_DATA_STR *str, uint8_t *wait_analysis_buff, uint16_t len)
+	* 作用:			Omodem在轨解析单帧并且赋值函数
+	*	参数:			*str->Omodem协议结构体
+	*						*wait_analysis_buff->接收数据首地址
+	*						len->等待解析数据长度
+	*	输出:			0->解析成功
+	*						-1->解析失败
 	*/
-int8_t vOmodem_Handle(uint8_t *data) {
-	uint8_t packet_data[1314] = {0}, cnt = 0, sync_num = 0, len = 0;
+int8_t cOmodem_Analysis(_OMODEM_DATA_STR *str, uint8_t *wait_analysis_buff, uint16_t len) {
+	uint32_t now_idx = 0, all_idx = 0, start_addr = 0;
+	uint8_t cnt = OMODEM_PACKET_NOW_ID_IDX, sync_num = 0;
 	uint8_t i = 0, j = 0;
+	
+	/* 判断长度 */
+	if (len == OMODEM_PACKET_SIZE) {
+		memcpy(&now_idx, &wait_analysis_buff[cnt], 4); cnt+=4;
+		memcpy(&all_idx, &wait_analysis_buff[cnt], 4); cnt+=4;
+		sync_num = wait_analysis_buff[cnt++];
+		
+		printf("now_idx %x all_idx %x sync_num %d\r\n", now_idx, all_idx, sync_num);
+		str->now_id = now_idx;
+		str->all_id = all_idx;
+		str->sync_num = sync_num;
+		
+		for (i = 0; i < sync_num; ++i) {
+			memcpy(&start_addr, &wait_analysis_buff[cnt], 4); cnt+=4;
+			len = wait_analysis_buff[cnt++];
+			
+			str->start_addr[i] = start_addr;
+			str->sync_len[i] = len;
+			memcpy(&str->sync_buff[i][0], &wait_analysis_buff[cnt], len);
+			
+			printf("start_addr %x len %d\r\n", start_addr, len);
+			for (j = 0; j < len; ++j) {
+				printf("%x\t", wait_analysis_buff[cnt+j]);
+				if ((j%16 == 0) && (j>0)) {
+					printf("\r\n");
+				}
+			}
+			printf("\r\n");
+			cnt += len;
+		}
+	}else {
+		return (-1);
+	}
+	
+	return 0;
+}
+
+/**
+	* 函数名:		int8_t cOmodem_Handle(_OMODEM_DATA_STR *str)
+	* 作用:			Omodem在轨协议处理函数
+	*	参数			*data->接收数据首地址
+	*	输出:			0->解析成功
+	*						-1->解析失败
+	*/
+int8_t cOmodem_Handle(_OMODEM_DATA_STR *str) {
+	uint8_t packet_data[1314] = {0};
 	uint16_t packet_length;
 	int8_t get_data_ok_flag = (-1);
-	uint32_t now_idx = 0, all_idx = 0, start_addr = 0;
 	
 	//循环接收文件数据
 	while (prv_cOmodem_TimeOut(OMODEM_NAK_TIMEOUT) == 0) {
 		packet_length = prv_uiOmodem_Get_Buff(packet_data);
 		prv_vOmodem_Clear_Buff();
 		
-		printf("packet_length %d\r\n", packet_length);
-		
-		/* 判断长度 */
-		if (packet_length == 100) {
-			memcpy(&now_idx, &packet_data[cnt], 4); cnt+=4;
-			memcpy(&all_idx, &packet_data[cnt], 4); cnt+=4;
-			sync_num = packet_data[cnt++];
-			
-			printf("now_idx %x all_idx %x sync_num %d\r\n", now_idx, all_idx, sync_num);
-			
-			for (i = 0; i < sync_num; ++i) {
-				memcpy(&start_addr, &packet_data[cnt], 4); cnt+=4;
-				len = packet_data[cnt++];
-				printf("start_addr %x len %d\r\n", start_addr, len);
-				for (j = 0; j < len; ++j) {
-					printf("%x ", packet_data[cnt+j]);
-					if ((j%16 == 0) && (j>0)) {
-						printf("\r\n");
-					}
-				}
-				printf("\r\n");
-				memcpy(&data[start_addr], &packet_data[cnt], len);
-				cnt += len;
-			}
-			
-			if (now_idx == all_idx) {
-				get_data_ok_flag = 0;
-			}
-		}
-		
+		get_data_ok_flag = cOmodem_Analysis(str, packet_data, packet_length);
 	}
 	
 	return get_data_ok_flag;

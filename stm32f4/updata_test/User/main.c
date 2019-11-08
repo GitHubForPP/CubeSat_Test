@@ -41,6 +41,7 @@ int8_t uc_app_run_flag = 0, uc_updata_app_flag = 0, read_app_cnt = 0;
 _UPDATA_UP_INFO_STR	 updata_up_str = {0};
 _UPDATA_APP_INFO_STR updata_app_str = {0};
 _MMODEM_MSG_INFO_STR updata_msg_str = {0};
+_OMODEM_DATA_STR		 omodem_updata_str = {0};
 
 //缓存数据
 uint8_t *p_data = (uint8_t *)(SDRAM_BANK_ADDR);
@@ -91,10 +92,19 @@ int main(void)
 //			}
 			printf("time %d\r\n", (ui_loop_cnt/(1000/MAIN_ONE_LOOP_TIME)));
 		}
-		if (vOmodem_Handle(p_up_data) == 0) {
-			updata_app_str.ul_file_size = (70*1024);
-			vUpdata_Write_App(&updata_app_str, p_up_data);
-			vUpdata_Jump_To_Run();
+		if (cOmodem_Handle(&omodem_updata_str) == 0) {
+			//搬移数据
+			for (i = 0; i < omodem_updata_str.sync_num; ++i) {
+				memcpy(&p_up_data[omodem_updata_str.start_addr[i]], 
+							 &omodem_updata_str.sync_buff[i][0],
+							 omodem_updata_str.sync_len[i]);
+			}
+			if ((omodem_updata_str.now_id == omodem_updata_str.all_id) 
+					&& (omodem_updata_str.all_id != 0)) {
+				updata_app_str.ul_file_size = (70*1024);
+				vUpdata_Write_App(&updata_app_str, p_up_data);
+				vUpdata_Jump_To_Run();
+			}
 		}
 		/* --------------- */
 	}   
