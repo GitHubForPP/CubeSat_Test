@@ -38,7 +38,6 @@ uint16_t ui_loop_cnt = 0;
 int8_t uc_app_run_flag = 0, uc_updata_app_flag = 0, read_app_cnt = 0;
 
 //Éý¼¶Êý¾Ý
-_UPDATA_UP_INFO_STR	 updata_up_str = {0};
 _UPDATA_APP_INFO_STR updata_app_str = {0};
 _MMODEM_MSG_INFO_STR updata_msg_str = {0};
 _OMODEM_DATA_STR		 omodem_updata_str = {0};
@@ -102,7 +101,7 @@ int main(void)
 			if ((omodem_updata_str.now_id == omodem_updata_str.all_id) 
 					&& (omodem_updata_str.all_id != 0)) {
 				updata_app_str.ul_file_size = (70*1024);
-				vUpdata_Write_App(&updata_app_str, p_up_data);
+				vUpdata_Write_App(UPDATA_APP_RUN_IDX, &updata_app_str, p_up_data);
 				vUpdata_Jump_To_Run();
 			}
 		}

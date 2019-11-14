@@ -12,7 +12,7 @@
 #define	prv_UPDATA_APP_1_ADDR								(0x00000000)
 #define	prv_UPDATA_APP_2_ADDR								(0x00100000)
 #define	prv_UPDATA_APP_3_ADDR								(0x00200000)
-#define	prv_UPDATA_APP_UP_ADDR							(0x00300000)		//定义更新APP的SPI FLASH地址
+#define	prv_UPDATA_APP_TEST_UP_ADDR					(0x00300000)		//定义更新APP的SPI FLASH地址
 #define	prv_UPDATA_INFO_END									(0x5A)
 #define prv_UPDATA_FLASH_SECTOR_SIZE				(SPI_FLASH_SectorSize)
 typedef   void(* prvFunction)(void);
@@ -176,13 +176,13 @@ void prv_vUpdata_Write_App3(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
 }
 
 /**
-	* 函数名:		void vUpdata_Write_Run(_UPDATA_APP_INFO_STR *str, uint8_t *data)
+	* 函数名:		void prv_vUpdata_Write_Run(_UPDATA_APP_INFO_STR *str, uint8_t *data)
 	* 作用:			写入RUN区程序
 	* 参数:			str->app信息结构体
 	*						*data->缓存数据首地址
 	*	输出:			无
 	*/
-void vUpdata_Write_Run(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
+void prv_vUpdata_Write_Run(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
 	uint32_t data_len = 0;
 	
 	str->ui_info_frame_end = prv_UPDATA_INFO_END;
@@ -196,13 +196,13 @@ void vUpdata_Write_Run(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
 }
 
 /**
-	* 函数名:		void vUpdata_Write_UP(_UPDATA_UP_INFO_STR *str, uint8_t *data)
+	* 函数名:		void prv_vUpdata_Write_UP(_UPDATA_APP_INFO_STR *str, uint8_t *data)
 	* 作用:			写入更新区程序
-	* 参数:			str->更新区信息结构体
+	* 参数:			str->app信息结构体
 	*						*data->缓存数据首地址
 	*	输出:			无
 	*/
-void vUpdata_Write_UP(_UPDATA_UP_INFO_STR *str, uint8_t *data) {
+void prv_vUpdata_Write_UP(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
 	uint8_t sector_num = 0, i = 0;
 	uint32_t data_len = 0;
 	
@@ -212,14 +212,14 @@ void vUpdata_Write_UP(_UPDATA_UP_INFO_STR *str, uint8_t *data) {
 	
 	//擦除信息加数据区
 	for (i = 0; i < sector_num+1; ++i) {
-		prv_vUpdata_Flash_Sector_Erase(prv_UPDATA_APP_UP_ADDR+(i*SPI_FLASH_SectorSize));	 	 
+		prv_vUpdata_Flash_Sector_Erase(prv_UPDATA_APP_TEST_UP_ADDR+(i*SPI_FLASH_SectorSize));	 	 
 	}
 	
 	//写入信息区
-	prv_vUpdata_Flash_Write((uint8_t *)str, prv_UPDATA_APP_UP_ADDR, sizeof(_UPDATA_UP_INFO_STR));
+	prv_vUpdata_Flash_Write((uint8_t *)str, prv_UPDATA_APP_TEST_UP_ADDR, sizeof(_UPDATA_APP_INFO_STR));
 	
 	//写入数据区
-	prv_vUpdata_Flash_Write(data, prv_UPDATA_APP_UP_ADDR+SPI_FLASH_SectorSize, data_len);
+	prv_vUpdata_Flash_Write(data, prv_UPDATA_APP_3_ADDR+SPI_FLASH_SectorSize, data_len);
 }
 
 /**
@@ -307,58 +307,56 @@ int8_t prv_cUpdata_Read_Run(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
 }
 
 /**
-	* 函数名:		void cUpdata_Read_UP(_UPDATA_UP_INFO_STR *str, uint8_t *data)
+	* 函数名:		void prv_cUpdata_Read_UP(_UPDATA_UP_INFO_STR *str, uint8_t *data)
 	* 作用:			读取更新区程序
-	* 参数:			str->更新区信息结构体
+	* 参数:			str->app信息结构体
 	*						*data->缓存数据首地址
 	*	输出:			0->成功 非0->失败
 	*/
-int8_t cUpdata_Read_UP(_UPDATA_UP_INFO_STR *str, uint8_t *data) {
-	
+int8_t prv_cUpdata_Read_UP(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
 	//读取信息区
-	prv_vUpdata_Flash_Read((uint8_t *)str, prv_UPDATA_APP_UP_ADDR, sizeof(_UPDATA_UP_INFO_STR));
+	prv_vUpdata_Flash_Read((uint8_t *)str, prv_UPDATA_APP_TEST_UP_ADDR, sizeof(_UPDATA_APP_INFO_STR));
 	
 	if (str->ui_info_frame_end != prv_UPDATA_INFO_END) return (-1);
+	if (str->soft_ver == 0) return (-1);
 	
 	//读取数据区
-	prv_vUpdata_Flash_Read(data, prv_UPDATA_APP_UP_ADDR+SPI_FLASH_SectorSize, str->ul_file_size);
+	prv_vUpdata_Flash_Read(data, prv_UPDATA_APP_TEST_UP_ADDR+SPI_FLASH_SectorSize, str->ul_file_size);
 	
 	return 0;
 }
 
 /**
-	* 函数名:		void prv_vUpdata_Printf_Msg(_UPDATA_APP_INFO_STR *str, uint8_t *data)
-	* 作用:			打印APP数据
-	* 参数:			str->app信息结构体
-	*						*data->缓存数据首地址
-	*	输出:			无
-	*/
-void prv_vUpdata_Printf_Msg(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
-	printf(">> file_len %d\r\n", str->ul_file_size);
-	uint16_t i = 0;
-	
-	for (i = 0; i < str->ul_file_size; ++i) {
-		printf("%x ", data[i]);
-	}
-	printf("\r\n");
-}
-
-/**
-	* 函数名:		void vUpdata_Write_App(_UPDATA_APP_INFO_STR *str, uint8_t *data)
+	* 函数名:		void vUpdata_Write_App(uint8_t id, _UPDATA_APP_INFO_STR *str, uint8_t *data)
 	* 作用:			写入应用程序数据
-	* 参数:			str->app信息结构体
+	* 参数:			id->写入存储区路径
+	*						str->app信息结构体
 	*						*data->缓存数据首地址
 	*	输出:			无
 	*/
-void vUpdata_Write_App(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
-	prv_vUpdata_Write_App1(str, data);
-	prv_vUpdata_Write_App2(str, data);
-	prv_vUpdata_Write_App3(str, data);
-	vUpdata_Write_Run(str, data);
+void vUpdata_Write_App(uint8_t id, _UPDATA_APP_INFO_STR *str, uint8_t *data) {
+	switch (id) {
+		case UPDATA_APP_1_IDX: {
+				prv_vUpdata_Write_App1(str, data);
+			}break;
+		case UPDATA_APP_2_IDX: {
+				prv_vUpdata_Write_App2(str, data);
+			}break;
+		case UPDATA_APP_3_IDX: {
+				prv_vUpdata_Write_App3(str, data);
+			}break;
+		case UPDATA_APP_RUN_IDX: {
+				prv_vUpdata_Write_Run(str, data);
+			}break;
+		case UPDATA_APP_TEST_UP_IDX: {
+				prv_vUpdata_Write_UP(str, data);
+			}break;
+		default: break;
+	}
 }
 
 /**
-	* 函数名:		int8_t cUpdata_Read_App(_UPDATA_APP_INFO_STR *str, uint8_t *data)
+	* 函数名:		int8_t cUpdata_Read_App(uint8_t id, _UPDATA_APP_INFO_STR *str, uint8_t *data)
 	* 作用:			读取APP区程序
 	* 参数:			str->app信息结构体
 	*						*data->缓存数据首地址
@@ -378,6 +376,9 @@ int8_t cUpdata_Read_App(uint8_t id, _UPDATA_APP_INFO_STR *str, uint8_t *data) {
 			}break;
 		case UPDATA_APP_RUN_IDX: {
 				back_flag = prv_cUpdata_Read_Run(str, data);
+			}break;
+		case UPDATA_APP_TEST_UP_IDX: {
+				back_flag = prv_cUpdata_Read_UP(str, data);
 			}break;
 		default: break;
 	}
@@ -399,22 +400,4 @@ void vUpdata_Jump_To_Run(void) {
 	prv_Jump_To_Application();
 }
 
-/**
-	* 函数名:		void vUpdata_Test(_UPDATA_APP_INFO_STR *str, uint8_t *data)
-	* 作用:			更新程序测试函数
-	* 参数:			str->app信息结构体
-	*						*data->缓存数据首地址
-	*	输出:			无
-	*/
-void vUpdata_Test(_UPDATA_APP_INFO_STR *str, uint8_t *data) {
-	_UPDATA_APP_INFO_STR test_str = {0};
-	
-	prv_vUpdata_Write_App1(str, data);
-	
-	if (prv_cUpdata_Read_App1(&test_str, data) != 0) {
-		printf(">> get app error\r\n");
-	}else {
-		prv_vUpdata_Printf_Msg(str, data);
-	}
-}
 

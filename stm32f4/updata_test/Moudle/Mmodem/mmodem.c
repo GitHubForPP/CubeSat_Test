@@ -46,7 +46,8 @@ int8_t prv_cMmodem_TimeOut(uint32_t t) {
 		}
 	}
 	
-	if ((in_cnt == new_cnt) && (new_cnt == 0)) {	//超时无新数据
+	//判断超时无新数据
+	if ((in_cnt == new_cnt) && (new_cnt == 0)) {	
 		return (-1);
 	}
 	
@@ -98,7 +99,8 @@ int8_t prv_cMmodem_Get_File_Info(_MMODEM_MSG_INFO_STR *str) {
 	uint8_t start_addr[START_ADDR_LENGTH] = {0};
 
 	uint8_t *file_ptr;
-	uint16_t packet_length, i;
+	uint16_t packet_length = 0, i = 0;
+	uint16_t cal_crc_value = 0, get_crc_value = 0;
 	
 	str->ul_file_size = 0;
 	prv_vMmodem_Clear_Buff();	//清空接收缓存
@@ -106,8 +108,7 @@ int8_t prv_cMmodem_Get_File_Info(_MMODEM_MSG_INFO_STR *str) {
 	
 	//等待数据返回
 	if (prv_cMmodem_TimeOut(NAK_TIMEOUT) != 0) {		
-		//超时退出 记得释放申请的内存
-		//printf("no data\r\n");		
+		//超时退出		
 		return (-1);
 	}
 	
@@ -115,9 +116,19 @@ int8_t prv_cMmodem_Get_File_Info(_MMODEM_MSG_INFO_STR *str) {
 	packet_length = prv_uiMmodem_Get_Buff(packet_data);
 	if (packet_length == (PACKET_SIZE+PACKET_OVERHEAD)) {	//正确数据
 		if (packet_data[PACKET_SEQNO_INDEX] != ((packet_data[PACKET_SEQNO_COMP_INDEX] ^ 0xff) & 0xff)) {
-        return (-1);
+			prv_vMmodem_Send_Byte(NAK);
+			printf("[mmodem] >>> head check error\r\n");
+      return (-1);
     }
-		//todo 添加CRC校验判断
+		//CRC校验判断
+		cal_crc_value = uiCrc_16(packet_data, ((PACKET_SIZE+PACKET_OVERHEAD)-2));
+		get_crc_value = ((uint16_t)packet_data[packet_length-2]<<8)|packet_data[packet_length-1];
+		if (cal_crc_value != get_crc_value) {
+			prv_vMmodem_Send_Byte(NAK);
+			printf("[mmodem] >>> error crc\r\n");
+			return (-1);
+		}
+		
 		//文件名数据包
 		if (packet_data[PACKET_HEADER] != 0) {
 				//文件名数据包有效数据区域
@@ -152,10 +163,11 @@ int8_t prv_cMmodem_Get_File_Info(_MMODEM_MSG_INFO_STR *str) {
 				prv_vMmodem_Send_Byte(ACK);
 		} else {	//文件名数据包空，结束传输
 				prv_vMmodem_Send_Byte(NAK);
-				printf("error name\r\n");
+				printf("[mmodem] >>> error name\r\n");
 		}
 	}else {
-		printf("error first\r\n");
+		prv_vMmodem_Send_Byte(NAK);
+		printf("[mmodem] >>> error size\r\n");
 		return (-1);
 	}
 	
@@ -175,7 +187,8 @@ int8_t vMmodem_Handle(_MMODEM_MSG_INFO_STR *str, uint8_t *data) {
 	uint16_t packet_length, i, write_size;
 	uint32_t ul_ymodem_write_cnt = 0;
 	int8_t get_data_ok_flag = (-1);
-//	
+	uint16_t cal_crc_value = 0, get_crc_value = 0;
+	
 	//判断文件信息是否接收解析成功
 	if (prv_cMmodem_Get_File_Info(str) != 0) {
 		return (-1);
@@ -187,10 +200,11 @@ int8_t vMmodem_Handle(_MMODEM_MSG_INFO_STR *str, uint8_t *data) {
 	while (prv_cMmodem_TimeOut(NAK_TIMEOUT) == 0) {
 		packet_length = prv_uiMmodem_Get_Buff(packet_data);
 		prv_vMmodem_Clear_Buff();
-		//printf("%x\r\n", packet_data[0]);
+		
 		if ((packet_length != (PACKET_SIZE+PACKET_OVERHEAD))
 				&& (packet_length != (PACKET_1K_SIZE+PACKET_OVERHEAD))
 				&& (packet_length != 1)) {
+			prv_vMmodem_Send_Byte(NAK);
 			continue;
 		}
 		
@@ -199,15 +213,20 @@ int8_t vMmodem_Handle(_MMODEM_MSG_INFO_STR *str, uint8_t *data) {
 			case STX: {
 					//解析帧校验
 					if (packet_data[PACKET_SEQNO_INDEX] != ((packet_data[PACKET_SEQNO_COMP_INDEX] ^ 0xff) & 0xff)) {
-							#ifdef YMODEM_RTOS_FLAG
-							vPortFree(packet_data); vPortFree(file_size); 
-							#endif
-							return (-1);
+						prv_vMmodem_Send_Byte(NAK);
+						return (-1);
 					}
 					//判断数据帧类型
 					write_size = (packet_data[0] == SOH)?PACKET_SIZE:PACKET_1K_SIZE;
 					
-					//待加入CRC校验
+					//CRC校验判断
+					cal_crc_value = uiCrc_16(packet_data, ((PACKET_SIZE+PACKET_OVERHEAD)-2));
+					get_crc_value = ((uint16_t)packet_data[packet_length-2]<<8)|packet_data[packet_length-1];
+					if (cal_crc_value != get_crc_value) {
+						prv_vMmodem_Send_Byte(NAK);
+						printf("[mmodem] >>> error crc\r\n");
+						return (-1);
+					}
 					
 					//操作数据
 					for (i = 0; i < write_size; ++i) {
